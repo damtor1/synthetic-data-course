@@ -1,0 +1,93 @@
+{
+  "name": "m1-real",
+  "method": "real",
+  "pool": null,
+  "model": "efficientnet_b0",
+  "epochs": 8,
+  "batch_size": 64,
+  "budget": 55,
+  "split": "val",
+  "tags": {},
+  "seeds": [
+    {
+      "seed": 0,
+      "egyptian_mau_recall": 0.45,
+      "macro_f1": 0.8607959577715039,
+      "accuracy": 0.86875,
+      "recall": {
+        "Abyssinian": 1.0,
+        "Bengal": 0.85,
+        "Birman": 0.85,
+        "Bombay": 1.0,
+        "Egyptian Mau": 0.45,
+        "Ragdoll": 0.85,
+        "Russian Blue": 1.0,
+        "Siamese": 0.95
+      }
+    },
+    {
+      "seed": 1,
+      "egyptian_mau_recall": 0.5,
+      "macro_f1": 0.8508499932000544,
+      "accuracy": 0.85625,
+      "recall": {
+        "Abyssinian": 0.9,
+        "Bengal": 0.9,
+        "Birman": 0.85,
+        "Bombay": 1.0,
+        "Egyptian Mau": 0.5,
+        "Ragdoll": 0.8,
+        "Russian Blue": 1.0,
+        "Siamese": 0.9
+      }
+    },
+    {
+      "seed": 2,
+      "egyptian_mau_recall": 0.55,
+      "macro_f1": 0.8769471720041733,
+      "accuracy": 0.88125,
+      "recall": {
+        "Abyssinian": 1.0,
+        "Bengal": 0.8,
+        "Birman": 0.9,
+        "Bombay": 1.0,
+        "Egyptian Mau": 0.55,
+        "Ragdoll": 0.9,
+        "Russian Blue": 1.0,
+        "Siamese": 0.9
+      }
+    },
+    {
+      "seed": 3,
+      "egyptian_mau_recall": 0.4,
+      "macro_f1": 0.8464460763883099,
+      "accuracy": 0.85625,
+      "recall": {
+        "Abyssinian": 0.95,
+        "Bengal": 0.85,
+        "Birman": 0.9,
+        "Bombay": 1.0,
+        "Egyptian Mau": 0.4,
+        "Ragdoll": 0.85,
+        "Russian Blue": 1.0,
+        "Siamese": 0.9
+      }
+    },
+    {
+      "seed": 4,
+      "egyptian_mau_recall": 0.6,
+      "macro_f1": 0.8653563310625115,
+      "accuracy": 0.86875,
+      "recall": {
+        "Abyssinian": 0.95,
+        "Bengal": 0.8,
+        "Birman": 0.85,
+        "Bombay": 1.0,
+        "Egyptian Mau": 0.6,
+        "Ragdoll": 0.85,
+        "Russian Blue": 1.0,
+        "Siamese": 0.9
+      }
+    }
+  ]
+}

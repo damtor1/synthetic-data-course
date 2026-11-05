@@ -1,0 +1,93 @@
+{
+  "name": "m1-augment-v2",
+  "method": "augment",
+  "pool": null,
+  "model": "efficientnet_b0",
+  "epochs": 8,
+  "batch_size": 64,
+  "budget": 55,
+  "split": "val",
+  "tags": {},
+  "seeds": [
+    {
+      "seed": 0,
+      "egyptian_mau_recall": 0.6,
+      "macro_f1": 0.8772217734346037,
+      "accuracy": 0.88125,
+      "recall": {
+        "Abyssinian": 1.0,
+        "Bengal": 0.75,
+        "Birman": 0.85,
+        "Bombay": 1.0,
+        "Egyptian Mau": 0.6,
+        "Ragdoll": 0.9,
+        "Russian Blue": 1.0,
+        "Siamese": 0.95
+      }
+    },
+    {
+      "seed": 1,
+      "egyptian_mau_recall": 0.6,
+      "macro_f1": 0.8713310848804325,
+      "accuracy": 0.875,
+      "recall": {
+        "Abyssinian": 1.0,
+        "Bengal": 0.9,
+        "Birman": 0.85,
+        "Bombay": 1.0,
+        "Egyptian Mau": 0.6,
+        "Ragdoll": 0.8,
+        "Russian Blue": 1.0,
+        "Siamese": 0.85
+      }
+    },
+    {
+      "seed": 2,
+      "egyptian_mau_recall": 0.65,
+      "macro_f1": 0.879008634164693,
+      "accuracy": 0.88125,
+      "recall": {
+        "Abyssinian": 0.95,
+        "Bengal": 0.8,
+        "Birman": 0.95,
+        "Bombay": 1.0,
+        "Egyptian Mau": 0.65,
+        "Ragdoll": 0.8,
+        "Russian Blue": 1.0,
+        "Siamese": 0.9
+      }
+    },
+    {
+      "seed": 3,
+      "egyptian_mau_recall": 0.75,
+      "macro_f1": 0.9048573736698793,
+      "accuracy": 0.90625,
+      "recall": {
+        "Abyssinian": 0.95,
+        "Bengal": 0.75,
+        "Birman": 1.0,
+        "Bombay": 1.0,
+        "Egyptian Mau": 0.75,
+        "Ragdoll": 0.85,
+        "Russian Blue": 1.0,
+        "Siamese": 0.95
+      }
+    },
+    {
+      "seed": 4,
+      "egyptian_mau_recall": 0.75,
+      "macro_f1": 0.9115195368244149,
+      "accuracy": 0.9125,
+      "recall": {
+        "Abyssinian": 0.95,
+        "Bengal": 0.85,
+        "Birman": 0.9,
+        "Bombay": 1.0,
+        "Egyptian Mau": 0.75,
+        "Ragdoll": 0.9,
+        "Russian Blue": 1.0,
+        "Siamese": 0.95
+      }
+    }
+  ]
+}
