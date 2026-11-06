@@ -1,0 +1,93 @@
+{
+  "name": "m2-base",
+  "method": "synthetic",
+  "pool": "m2-base",
+  "model": "efficientnet_b0",
+  "epochs": 8,
+  "batch_size": 64,
+  "budget": 55,
+  "split": "test",
+  "tags": {},
+  "seeds": [
+    {
+      "seed": 0,
+      "egyptian_mau_recall": 0.8,
+      "macro_f1": 0.9002917108901127,
+      "accuracy": 0.9,
+      "recall": {
+        "Abyssinian": 0.9,
+        "Bengal": 0.9333333333333333,
+        "Birman": 0.9333333333333333,
+        "Bombay": 1.0,
+        "Egyptian Mau": 0.8,
+        "Ragdoll": 0.8666666666666667,
+        "Russian Blue": 0.8666666666666667,
+        "Siamese": 0.9
+      }
+    },
+    {
+      "seed": 1,
+      "egyptian_mau_recall": 0.7333333333333333,
+      "macro_f1": 0.907812901045402,
+      "accuracy": 0.9083333333333333,
+      "recall": {
+        "Abyssinian": 0.9333333333333333,
+        "Bengal": 0.9,
+        "Birman": 0.9333333333333333,
+        "Bombay": 1.0,
+        "Egyptian Mau": 0.7333333333333333,
+        "Ragdoll": 0.9,
+        "Russian Blue": 0.9333333333333333,
+        "Siamese": 0.9333333333333333
+      }
+    },
+    {
+      "seed": 2,
+      "egyptian_mau_recall": 0.7333333333333333,
+      "macro_f1": 0.8997705014663748,
+      "accuracy": 0.9,
+      "recall": {
+        "Abyssinian": 0.9,
+        "Bengal": 0.9333333333333333,
+        "Birman": 0.9333333333333333,
+        "Bombay": 0.9666666666666667,
+        "Egyptian Mau": 0.7333333333333333,
+        "Ragdoll": 0.9,
+        "Russian Blue": 0.9,
+        "Siamese": 0.9333333333333333
+      }
+    },
+    {
+      "seed": 3,
+      "egyptian_mau_recall": 0.7333333333333333,
+      "macro_f1": 0.908126653525975,
+      "accuracy": 0.9083333333333333,
+      "recall": {
+        "Abyssinian": 0.9333333333333333,
+        "Bengal": 0.9666666666666667,
+        "Birman": 0.9333333333333333,
+        "Bombay": 0.9333333333333333,
+        "Egyptian Mau": 0.7333333333333333,
+        "Ragdoll": 0.9,
+        "Russian Blue": 0.9333333333333333,
+        "Siamese": 0.9333333333333333
+      }
+    },
+    {
+      "seed": 4,
+      "egyptian_mau_recall": 0.7333333333333333,
+      "macro_f1": 0.8864940112163341,
+      "accuracy": 0.8875,
+      "recall": {
+        "Abyssinian": 0.9333333333333333,
+        "Bengal": 0.8666666666666667,
+        "Birman": 0.9,
+        "Bombay": 1.0,
+        "Egyptian Mau": 0.7333333333333333,
+        "Ragdoll": 0.9,
+        "Russian Blue": 0.8333333333333334,
+        "Siamese": 0.9333333333333333
+      }
+    }
+  ]
+}

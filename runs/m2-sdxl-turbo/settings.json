@@ -1,0 +1,8 @@
+{
+  "method": "synthetic",
+  "pool": "m2-sdxl-turbo",
+  "model": "efficientnet_b0",
+  "epochs": 8,
+  "batch_size": 64,
+  "budget": 55
+}

@@ -1,0 +1,8 @@
+{
+  "method": "synthetic",
+  "pool": "m2-guidance15",
+  "model": "efficientnet_b0",
+  "epochs": 8,
+  "batch_size": 64,
+  "budget": 55
+}
