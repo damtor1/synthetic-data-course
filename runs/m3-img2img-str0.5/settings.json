@@ -1,0 +1,8 @@
+{
+  "method": "synthetic",
+  "pool": "m3-img2img-str0.5",
+  "model": "efficientnet_b0",
+  "epochs": 8,
+  "batch_size": 64,
+  "budget": 55
+}

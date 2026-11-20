@@ -1,0 +1,96 @@
+{
+  "name": "m3-img2img-str0.5",
+  "method": "synthetic",
+  "pool": "m3-img2img-str0.5",
+  "model": "efficientnet_b0",
+  "epochs": 8,
+  "batch_size": 64,
+  "budget": 55,
+  "split": "val",
+  "tags": {
+    "mode": "img2img",
+    "strength": 0.5
+  },
+  "seeds": [
+    {
+      "seed": 0,
+      "egyptian_mau_recall": 0.8,
+      "macro_f1": 0.9061788221608504,
+      "accuracy": 0.90625,
+      "recall": {
+        "Abyssinian": 1.0,
+        "Bengal": 0.85,
+        "Birman": 0.95,
+        "Bombay": 1.0,
+        "Egyptian Mau": 0.8,
+        "Ragdoll": 0.85,
+        "Russian Blue": 1.0,
+        "Siamese": 0.8
+      }
+    },
+    {
+      "seed": 1,
+      "egyptian_mau_recall": 0.75,
+      "macro_f1": 0.8992582712318808,
+      "accuracy": 0.9,
+      "recall": {
+        "Abyssinian": 1.0,
+        "Bengal": 0.85,
+        "Birman": 0.85,
+        "Bombay": 1.0,
+        "Egyptian Mau": 0.75,
+        "Ragdoll": 0.85,
+        "Russian Blue": 1.0,
+        "Siamese": 0.9
+      }
+    },
+    {
+      "seed": 2,
+      "egyptian_mau_recall": 0.7,
+      "macro_f1": 0.9047348357476876,
+      "accuracy": 0.90625,
+      "recall": {
+        "Abyssinian": 0.95,
+        "Bengal": 0.85,
+        "Birman": 0.95,
+        "Bombay": 1.0,
+        "Egyptian Mau": 0.7,
+        "Ragdoll": 0.9,
+        "Russian Blue": 1.0,
+        "Siamese": 0.9
+      }
+    },
+    {
+      "seed": 3,
+      "egyptian_mau_recall": 0.8,
+      "macro_f1": 0.9061857854941937,
+      "accuracy": 0.90625,
+      "recall": {
+        "Abyssinian": 1.0,
+        "Bengal": 0.8,
+        "Birman": 0.85,
+        "Bombay": 1.0,
+        "Egyptian Mau": 0.8,
+        "Ragdoll": 0.85,
+        "Russian Blue": 1.0,
+        "Siamese": 0.95
+      }
+    },
+    {
+      "seed": 4,
+      "egyptian_mau_recall": 0.85,
+      "macro_f1": 0.9125900345785708,
+      "accuracy": 0.9125,
+      "recall": {
+        "Abyssinian": 0.95,
+        "Bengal": 0.85,
+        "Birman": 0.85,
+        "Bombay": 1.0,
+        "Egyptian Mau": 0.85,
+        "Ragdoll": 0.9,
+        "Russian Blue": 1.0,
+        "Siamese": 0.9
+      }
+    }
+  ]
+}

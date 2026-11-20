@@ -142,12 +142,116 @@ effect is still a result: say so and say why.
 ## Meeting 3 — Generation from training photos
 
 - **Question:** How close to the real photos should the synthetic images be?
-- **img2img strength values and IP-Adapter scale values tried:**
+- **Experimental design — `img2img` strength sweep and `IP-Adapter` scale sweep:** Holding the exact `m2-base` text-to-image configuration fixed (`sd15`, `dpm` scheduler, `steps=30`, `guidance=7.5`, `seed=1000`, `size=512`, and the same two alternating prompts and negative prompt), we conditioned generation on all 15 Egyptian Mau training photos (`Egyptian_Mau_104` through `Egyptian_Mau_192`, cycled deterministically across the 110-image pool) using two complementary mechanisms:
+  - **`img2img` (`--mode img2img`, `strength` ∈ `{0.3, 0.5, 0.7, 0.9}`):** Starts from a noised latent of the training photo and denoises for `effective_steps = int(steps * strength)` steps (`9, 15, 21, 27` out of `30`). Lower `strength` stays close to the source photo's pixel layout, pose, and background; higher `strength` replaces more of the latent with Gaussian noise, moving *further* from the training photo.
+  - **`IP-Adapter` (`--mode ip-adapter`, `ip_adapter_scale` ∈ `{0.3, 0.5, 0.7, 1.0}`):** Denoises from pure Gaussian noise for the full `effective_steps = 30` steps at every scale while injecting CLIP image embeddings of the training photo (`h94/IP-Adapter`, `ip-adapter_sd15.safetensors`) via decoupled cross-attention. Increasing `scale` pulls the generated image *closer* to the source photo's visual attributes and style.
+
+  | Pool | Mode | Swept Parameter | `steps` | `effective_steps` (`manifest.jsonl`) | Usable / Total (`manifest.jsonl`) | Distance from Training Photos |
+  | --- | --- | ---: | ---: | ---: | ---: | --- |
+  | `m3-img2img-str0.3` | `img2img` | `strength = 0.3` | 30 | 9 | 110 / 110 | Very close (near-copies) |
+  | `m3-img2img-str0.5` | `img2img` | `strength = 0.5` | 30 | 15 | 110 / 110 | Moderately close |
+  | `m3-img2img-str0.7` | `img2img` | `strength = 0.7` | 30 | 21 | 110 / 110 | Moderately far |
+  | `m3-img2img-str0.9` | `img2img` | `strength = 0.9` | 30 | 27 | 109 / 110 (1 `safety_blocked`) | Far (near-T2I novelty) |
+  | `m3-ip-scale0.3` | `ip-adapter` | `scale = 0.3` | 30 | 30 | 110 / 110 | Mild image conditioning (farther) |
+  | `m3-ip-scale0.5` | `ip-adapter` | `scale = 0.5` | 30 | 30 | 110 / 110 | Moderate image conditioning |
+  | `m3-ip-scale0.7` | `ip-adapter` | `scale = 0.7` | 30 | 30 | 108 / 110 (2 `safety_blocked`) | Strong image conditioning |
+  | `m3-ip-scale1.0` | `ip-adapter` | `scale = 1.0` | 30 | 30 | 104 / 110 (6 `safety_blocked`) | Maximum image conditioning (closest) |
+
 - **Commands:**
-- **Contact sheets:**
+  ```bash
+  # Generation commands (executed on GPU with fixed m2-base prompts and negative prompt)
+  for s in 0.3 0.5 0.7 0.9; do
+    uv run synth-generate --name m3-img2img-str$s --mode img2img --strength $s \
+      --prompt "a clear photography of a spotted Egyptian Mau cat, green gooseberry eyes, detailed fur, indoor lighting" \
+      --prompt "a studio portrait of an Egyptian Mau cat sitting on a rug, sharp focus, natural colors" \
+      --negative-prompt "illustration, painting, cartoon, text, watermark, multiple cats, deformed animal, extra limbs"
+  done
+
+  for c in 0.3 0.5 0.7 1.0; do
+    uv run synth-generate --name m3-ip-scale$c --mode ip-adapter --ip-adapter-scale $c \
+      --prompt "a clear photography of a spotted Egyptian Mau cat, green gooseberry eyes, detailed fur, indoor lighting" \
+      --prompt "a studio portrait of an Egyptian Mau cat sitting on a rug, sharp focus, natural colors" \
+      --negative-prompt "illustration, painting, cartoon, text, watermark, multiple cats, deformed animal, extra limbs"
+  done
+
+  # Classifier training (5 seeds each)
+  for s in 0.3 0.5 0.7 0.9; do
+    uv run synth-train --name m3-img2img-str$s --method synthetic --pool m3-img2img-str$s --tag mode=img2img --tag strength=$s
+  done
+  for c in 0.3 0.5 0.7 1.0; do
+    uv run synth-train --name m3-ip-scale$c --method synthetic --pool m3-ip-scale$c --tag mode=ip-adapter --tag scale=$c
+  done
+
+  # Dual final test evaluation (best img2img + best ip-adapter selected on validation)
+  uv run synth-test --run m3-img2img-str0.9
+  uv run synth-test --run m3-ip-scale0.3
+  ```
+
+- **Contact sheets (paired side-by-side with the 15 real Egyptian Mau training photos):**
+  - **img2img sweep:**
+    - [`pools/m3-img2img-str0.3/contact-sheet.jpg`](pools/m3-img2img-str0.3/contact-sheet.jpg) (`effective_steps = 9`): Almost pixel-identical copies of the 15 training photos. Every pose, camera angle, and background is frozen verbatim — including unwanted source artifacts: the gold cursive `"© Chanan"` photographer watermark in `#5` and `#20` (`Egyptian_Mau_124`), the `"Helmi"` watermark in the bottom-left corner of `#2` and `#17` (`Egyptian_Mau_119`), and the wire-mesh cage bars and brick wall in `#6` and `#21` (`Egyptian_Mau_134`). Only micro-textures on the fur and eyes are lightly re-sharpened.
+    - [`pools/m3-img2img-str0.5/contact-sheet.jpg`](pools/m3-img2img-str0.5/contact-sheet.jpg) (`effective_steps = 15`): Still locks in the source silhouette, pose, and scene geometry (e.g., `#1`/`#16` perched on the beige chair by venetian blinds, `#3`/`#18` on the pink blanket, `#7`/`#22` upside-down on the mint backdrop), while sharpening and darkening the coat spots (`#0`, `#2`, `#6`, `#14`). Photographer watermarks begin to dissolve (`#2`/`#17` erase `"Helmi"` and `#5` removes `"© Chanan"`, though `#20` turns it into garbled white text), whereas the wire-mesh cage in `#6` and `#21` remains clearly intact.
+    - [`pools/m3-img2img-str0.7/contact-sheet.jpg`](pools/m3-img2img-str0.7/contact-sheet.jpg) (`effective_steps = 21`): Clear transition from editing to re-synthesis. Both watermarks (`#2`/`#17`, `#5`/`#20`) and the wire-mesh cage (`#6` replaced by vertical wood paneling; `#21` replaced by a patterned tapestry rug) disappear completely. Poses diverge substantially from the sources: `#1` moves from the chair onto a patterned rug, `#16` turns into a close-up portrait, `#7` and `#22` abandon the upside-down posture for lying or top-down views, and `#3`/`#18` sit upright instead of reclining.
+    - [`pools/m3-img2img-str0.9/contact-sheet.jpg`](pools/m3-img2img-str0.9/contact-sheet.jpg) (`effective_steps = 27`): Replacing 90% of the initial latent with noise yields genuinely new poses, framings, and indoor scenes while keeping only coarse colour/luminance cues from the source photo. For example, `#0` (`Egyptian_Mau_104`) becomes a green-eyed close-up portrait, `#4` (`Egyptian_Mau_123`) reclines on a dark velvet sofa beside a lamp, `#6` and `#21` (`Egyptian_Mau_134`) completely replace the cage with warm indoor portraits and a fluffy beige rug, `#8` (`Egyptian_Mau_147`) becomes a frontal kitten face crop, and `#22` (`Egyptian_Mau_144`) lies calmly on a white surface. All watermarks and cage artifacts are absent.
+  - **IP-Adapter sweep:**
+    - [`pools/m3-ip-scale0.3/contact-sheet.jpg`](pools/m3-ip-scale0.3/contact-sheet.jpg) (`effective_steps = 30`): Generates completely new poses and indoor backgrounds while faithfully transferring the source photo's coat colour palette and spot pattern (e.g., bronze/warm coats in `#1`, `#12`, `#16` stay warm-toned; silver-spotted coats in `#4`, `#11`, `#19` stay cool silver). Photographer watermarks (`#2`/`#17`, `#5`/`#20`) never appear, and the wire-mesh cage in `#6`/`#21` is not copied verbatim, though subtle semantic colour/scene bleeding occurs (purple floor in `#12`, red fabric in `#13`).
+    - [`pools/m3-ip-scale0.5/contact-sheet.jpg`](pools/m3-ip-scale0.5/contact-sheet.jpg) (`effective_steps = 30`): Stronger coat-pattern fidelity, but pose diversity narrows toward repetitive upright three-quarter seated studio portraits (`#4`, `#5`, `#7`, `#8`, `#9`, `#11`, `#16`, `#17`, `#19`, `#20`, `#21`), and body proportions begin drifting toward slender, long-necked Savannah/Oriental silhouettes. In `#6` (`Egyptian_Mau_134`), outdoor fence slats start reappearing in the background, and `#22` echoes the curved-back silhouette of `Egyptian_Mau_144` as an awkward arched-back standing pose.
+    - [`pools/m3-ip-scale0.7/contact-sheet.jpg`](pools/m3-ip-scale0.7/contact-sheet.jpg) (`effective_steps = 30`): Increased visual rigidity and Savannah-like elongation (`#2`, `#8`, `#16`, `#22`, `#23`). Semantic background leakage intensifies: `#6` and `#21` both pull outdoor fence/balcony railings back into the scene, `#10` brings back the red collar of `Egyptian_Mau_154`, and `#12`/`#13` lock onto purple and red fabrics. Two images in the 110-image pool trigger `safety_blocked`.
+    - [`pools/m3-ip-scale1.0/contact-sheet.jpg`](pools/m3-ip-scale1.0/contact-sheet.jpg) (`effective_steps = 30`): Over-conditioning degrades image quality and reliability. Image embeddings overpower the text and negative prompts, producing harsh colour casts and oversaturation (`#3` and `#18` acquire intense magenta/purple lighting), awkward head cropping (`#0`, `#4`, `#12`, `#14`, `#23`), and 6 `safety_blocked` black frames across the pool (visible at `#2` and `#8` on the contact sheet). Watermarks still do not copy verbatim, but semantic background elements (railing in `#6`/`#21`, purple/red textiles in `#12`/`#13`) strongly persist.
+
 - **Results on validation:**
-- **What I see:**
-- **Best run of each mode, and its test result:**
+
+  **`img2img` strength sweep (`effective_steps`: 9, 15, 21, 27 / 30):**
+
+  | Run | Mode / Setting | Metric | Seed 0 | Seed 1 | Seed 2 | Seed 3 | Seed 4 | Mean ± SD |
+  | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
+  | `m3-img2img-str0.3` | `img2img` (`strength=0.3`, `eff=9`) | Egyptian Mau Recall | 0.750 | 0.650 | 0.700 | 0.750 | 0.800 | **0.730 ± 0.057** |
+  | `m3-img2img-str0.3` | `img2img` (`strength=0.3`, `eff=9`) | Macro-F1 | 0.893 | 0.873 | 0.899 | 0.900 | 0.893 | **0.892 ± 0.011** |
+  | `m3-img2img-str0.5` | `img2img` (`strength=0.5`, `eff=15`) | Egyptian Mau Recall | 0.800 | 0.750 | 0.700 | 0.800 | 0.850 | **0.780 ± 0.057** |
+  | `m3-img2img-str0.5` | `img2img` (`strength=0.5`, `eff=15`) | Macro-F1 | 0.906 | 0.899 | 0.905 | 0.906 | 0.913 | **0.906 ± 0.005** |
+  | `m3-img2img-str0.7` | `img2img` (`strength=0.7`, `eff=21`) | Egyptian Mau Recall | 0.800 | 0.750 | 0.700 | 0.800 | 0.900 | **0.790 ± 0.074** |
+  | `m3-img2img-str0.7` | `img2img` (`strength=0.7`, `eff=21`) | Macro-F1 | 0.906 | 0.899 | 0.905 | 0.894 | 0.925 | **0.906 ± 0.012** |
+  | `m3-img2img-str0.9` | `img2img` (`strength=0.9`, `eff=27`) | Egyptian Mau Recall | 0.900 | 0.800 | 0.750 | 0.850 | 0.900 | **0.840 ± 0.065** |
+  | `m3-img2img-str0.9` | `img2img` (`strength=0.9`, `eff=27`) | Macro-F1 | 0.913 | 0.906 | 0.899 | 0.912 | 0.925 | **0.911 ± 0.010** |
+
+  **`IP-Adapter` scale sweep (`effective_steps`: 30 / 30 for all scales):**
+
+  | Run | Mode / Setting | Metric | Seed 0 | Seed 1 | Seed 2 | Seed 3 | Seed 4 | Mean ± SD |
+  | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
+  | `m3-ip-scale0.3` | `ip-adapter` (`scale=0.3`, `eff=30`) | Egyptian Mau Recall | 0.750 | 0.750 | 0.650 | 0.850 | 0.850 | **0.770 ± 0.084** |
+  | `m3-ip-scale0.3` | `ip-adapter` (`scale=0.3`, `eff=30`) | Macro-F1 | 0.893 | 0.906 | 0.891 | 0.919 | 0.925 | **0.907 ± 0.015** |
+  | `m3-ip-scale0.5` | `ip-adapter` (`scale=0.5`, `eff=30`) | Egyptian Mau Recall | 0.750 | 0.750 | 0.650 | 0.750 | 0.800 | **0.740 ± 0.055** |
+  | `m3-ip-scale0.5` | `ip-adapter` (`scale=0.5`, `eff=30`) | Macro-F1 | 0.905 | 0.906 | 0.892 | 0.893 | 0.919 | **0.903 ± 0.011** |
+  | `m3-ip-scale0.7` | `ip-adapter` (`scale=0.7`, `eff=30`) | Egyptian Mau Recall | 0.750 | 0.750 | 0.650 | 0.750 | 0.750 | **0.730 ± 0.045** |
+  | `m3-ip-scale0.7` | `ip-adapter` (`scale=0.7`, `eff=30`) | Macro-F1 | 0.905 | 0.906 | 0.892 | 0.899 | 0.912 | **0.903 ± 0.008** |
+  | `m3-ip-scale1.0` | `ip-adapter` (`scale=1.0`, `eff=30`) | Egyptian Mau Recall | 0.750 | 0.750 | 0.650 | 0.750 | 0.750 | **0.730 ± 0.045** |
+  | `m3-ip-scale1.0` | `ip-adapter` (`scale=1.0`, `eff=30`) | Macro-F1 | 0.893 | 0.899 | 0.904 | 0.893 | 0.906 | **0.899 ± 0.006** |
+
+  ![Meeting 3 comparison](evidence/m3_comparison.png)
+
+- **What I see:** Both sweeps point cleanly in the exact same direction from opposite ends of the conditioning spectrum — **moving further away from the 15 real training photos consistently helps the classifier, whereas staying close to them hurts**:
+  1. **Monotonic gain as `img2img` moves away from the sources (`strength` `0.3 → 0.9`):** At `strength=0.3`, near-copy generations add only +4.0 pp validation recall over `m1-oversample` (`0.730` vs `0.690`) and virtually identical Macro-F1 (`0.892` vs `0.890`), because duplicating the same 15 poses, backgrounds, watermarks (`#2`, `#5`), and cage bars (`#6`, `#21`) acts like slightly jittered oversampling. As `strength` rises to `0.5`, `0.7`, and `0.9`, validation recall climbs monotonically (`0.730 → 0.780 → 0.790 → 0.840`) and Macro-F1 rises (`0.892 → 0.906 → 0.906 → 0.911`), peaking at `m3-img2img-str0.9` where 90% noise replacement matches `m2-base` T2I (`0.840` recall, `0.911` vs `0.910` Macro-F1).
+  2. **Monotonic drop as `IP-Adapter` pulls closer to the sources (`scale` `0.3 → 1.0`):** Even the best `IP-Adapter` setting (`scale=0.3`, `0.770 ± 0.084` recall, `0.907 ± 0.015` Macro-F1) trails `m3-img2img-str0.9` and `m2-base` by 7.0 pp on validation recall. Increasing `scale` further monotonically lowers recall (`0.770 → 0.740 → 0.730 → 0.730`) and Macro-F1 (`0.907 → 0.903 → 0.903 → 0.899`) as pose diversity collapses into stiff seated portraits, proportions drift toward Savannah-like silhouettes, and over-conditioning introduces harsh colour casts (`#3`, `#18`) and `safety_blocked` failures (`6/110` at `scale=1.0`).
+  3. **New poses and backgrounds beat near-copies:** Comparing the contact sheets against validation accuracy directly confirms that the classifier gains far more from **novel poses, viewpoints, and clean indoor scenes** (e.g., `m3-img2img-str0.9` `#0`, `#4`, `#6`, `#8`, `#21`, `#22`) than from faithful pixel-level or style-level copies of the 15 training photos (`m3-img2img-str0.3` and `m3-ip-scale0.7–1.0`).
+
+- **Best run of each mode, and its test result:** Based on validation, I select **`m3-img2img-str0.9`** (best `img2img`: `0.840 ± 0.065` recall, `0.911 ± 0.010` Macro-F1) and **`m3-ip-scale0.3`** (best `ip-adapter`: `0.770 ± 0.084` recall, `0.907 ± 0.015` Macro-F1) and evaluate both on the held-out test set (240 photos):
+
+  | Run | Method / Pool | Metric | Seed 0 | Seed 1 | Seed 2 | Seed 3 | Seed 4 | Mean ± SD |
+  | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
+  | `m1-real` | `real` (imbalanced) | Egyptian Mau Recall | 0.467 | 0.500 | 0.567 | 0.433 | 0.600 | **0.513 ± 0.069** |
+  | `m1-real` | `real` (imbalanced) | Macro-F1 | 0.843 | 0.849 | 0.880 | 0.839 | 0.864 | **0.855 ± 0.017** |
+  | `m1-oversample` | `oversample` (+55 copies) | Egyptian Mau Recall | 0.700 | 0.667 | 0.667 | 0.700 | 0.733 | **0.693 ± 0.028** |
+  | `m1-oversample` | `oversample` (+55 copies) | Macro-F1 | 0.883 | 0.882 | 0.886 | 0.875 | 0.866 | **0.878 ± 0.008** |
+  | `m1-augment-v2` | `augment` (v2: milder) | Egyptian Mau Recall | 0.633 | 0.633 | 0.667 | 0.700 | 0.667 | **0.660 ± 0.028** |
+  | `m1-augment-v2` | `augment` (v2: milder) | Macro-F1 | 0.860 | 0.869 | 0.882 | 0.883 | 0.882 | **0.875 ± 0.010** |
+  | `m2-base` | `synthetic` (`t2i`, `sd15`) | Egyptian Mau Recall | 0.800 | 0.733 | 0.733 | 0.733 | 0.733 | **0.747 ± 0.030** |
+  | `m2-base` | `synthetic` (`t2i`, `sd15`) | Macro-F1 | 0.900 | 0.908 | 0.900 | 0.908 | 0.886 | **0.900 ± 0.009** |
+  | `m3-img2img-str0.9` | `synthetic` (`img2img`, `str=0.9`, chosen) | Egyptian Mau Recall | 0.700 | 0.767 | 0.733 | 0.700 | 0.833 | **0.747 ± 0.056** |
+  | `m3-img2img-str0.9` | `synthetic` (`img2img`, `str=0.9`, chosen) | Macro-F1 | 0.883 | 0.887 | 0.883 | 0.882 | 0.888 | **0.885 ± 0.002** |
+  | `m3-ip-scale0.3` | `synthetic` (`ip-adapter`, `scale=0.3`, chosen) | Egyptian Mau Recall | 0.733 | 0.733 | 0.667 | 0.700 | 0.800 | **0.727 ± 0.049** |
+  | `m3-ip-scale0.3` | `synthetic` (`ip-adapter`, `scale=0.3`, chosen) | Macro-F1 | 0.884 | 0.878 | 0.878 | 0.891 | 0.883 | **0.883 ± 0.005** |
+
+- **Takeaway — answering the research question:** For a 15-photo minority class, **synthetic images should stay far from the training photos rather than close to them**. On the held-out test set, the validation ranking holds cleanly: `m3-img2img-str0.9` (`0.747 ± 0.056` recall, `0.885 ± 0.002` Macro-F1) edges out `m3-ip-scale0.3` (`0.727 ± 0.049` recall, `0.883 ± 0.005` Macro-F1), and both outperform all three Meeting 1 real-data baselines (+3.4 to +5.4 pp recall over `m1-oversample`, +21.4 to +23.4 pp over `m1-real`). Crucially, however, **neither photo-conditioned mode beats pure unconditioned text-to-image (`m2-base`)**: `m3-img2img-str0.9` merely ties `m2-base` on test Egyptian Mau recall (`0.747` vs `0.747`, with higher seed variance `0.056` vs `0.030`) while trailing on test Macro-F1 (`0.885` vs `0.900`), and `m3-ip-scale0.3` trails on both metrics. Conditioning on only 15 real photos anchors the generator to their narrow pose/background distribution (and, at low `img2img` strength, even copies watermarks and cage bars), whereas maximal freedom from the training photos (`strength=0.9` or pure T2I) supplies the genuine compositional diversity the classifier needs to generalise.
 
 ## Meeting 4 — Editing training photos
 

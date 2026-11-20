@@ -1,0 +1,161 @@
+image,breed,predicted,p_egyptian_mau
+Abyssinian_10,Abyssinian,Abyssinian,0.00708
+Abyssinian_101,Abyssinian,Abyssinian,0.00914
+Abyssinian_102,Abyssinian,Abyssinian,0.00275
+Abyssinian_113,Abyssinian,Russian Blue,0.00557
+Abyssinian_115,Abyssinian,Abyssinian,0.00264
+Abyssinian_124,Abyssinian,Abyssinian,0.00028
+Abyssinian_125,Abyssinian,Abyssinian,0.03877
+Abyssinian_131,Abyssinian,Abyssinian,0.00227
+Abyssinian_133,Abyssinian,Abyssinian,0.00414
+Abyssinian_137,Abyssinian,Abyssinian,0.00068
+Abyssinian_144,Abyssinian,Abyssinian,0.00145
+Abyssinian_153,Abyssinian,Abyssinian,0.00087
+Abyssinian_157,Abyssinian,Abyssinian,0.00101
+Abyssinian_159,Abyssinian,Abyssinian,0.00292
+Abyssinian_160,Abyssinian,Abyssinian,0.00655
+Abyssinian_161,Abyssinian,Abyssinian,0.0015
+Abyssinian_170,Abyssinian,Abyssinian,0.00288
+Abyssinian_174,Abyssinian,Abyssinian,0.00065
+Abyssinian_175,Abyssinian,Abyssinian,0.0144
+Abyssinian_183,Abyssinian,Abyssinian,0.00036
+Bengal_100,Bengal,Bengal,0.02726
+Bengal_12,Bengal,Bengal,0.0163
+Bengal_126,Bengal,Bengal,0.01841
+Bengal_130,Bengal,Bengal,0.00689
+Bengal_131,Bengal,Bengal,0.04616
+Bengal_134,Bengal,Abyssinian,0.00087
+Bengal_136,Bengal,Bengal,0.00208
+Bengal_138,Bengal,Bengal,0.00044
+Bengal_14,Bengal,Bengal,0.01077
+Bengal_15,Bengal,Bengal,0.00136
+Bengal_156,Bengal,Bengal,0.18209
+Bengal_158,Bengal,Abyssinian,0.00855
+Bengal_159,Bengal,Bengal,0.06828
+Bengal_161,Bengal,Bengal,0.02644
+Bengal_166,Bengal,Bengal,0.30503
+Bengal_171,Bengal,Bengal,0.00095
+Bengal_172,Bengal,Bengal,0.00083
+Bengal_173,Bengal,Bengal,0.223
+Bengal_182,Bengal,Bengal,0.02574
+Bengal_184,Bengal,Bengal,0.07439
+Birman_104,Birman,Birman,0.00118
+Birman_106,Birman,Birman,0.00017
+Birman_108,Birman,Birman,0.00139
+Birman_110,Birman,Birman,0.00394
+Birman_113,Birman,Birman,0.0003
+Birman_119,Birman,Birman,0.00026
+Birman_12,Birman,Birman,0.00012
+Birman_128,Birman,Birman,0.00012
+Birman_134,Birman,Ragdoll,0.00486
+Birman_138,Birman,Birman,0.00251
+Birman_140,Birman,Birman,0.0002
+Birman_15,Birman,Ragdoll,0.00371
+Birman_151,Birman,Birman,0.00126
+Birman_152,Birman,Birman,0.00022
+Birman_158,Birman,Birman,0.0009
+Birman_16,Birman,Birman,0.00045
+Birman_166,Birman,Birman,0.0004
+Birman_17,Birman,Ragdoll,0.00262
+Birman_178,Birman,Birman,0.00027
+Birman_183,Birman,Birman,0.00023
+Bombay_102,Bombay,Bombay,0.00032
+Bombay_103,Bombay,Bombay,0.0016
+Bombay_107,Bombay,Bombay,0.00214
+Bombay_117,Bombay,Bombay,0.00062
+Bombay_12,Bombay,Bombay,0.00124
+Bombay_120,Bombay,Bombay,0.00265
+Bombay_138,Bombay,Bombay,0.00099
+Bombay_140,Bombay,Bombay,0.00066
+Bombay_144,Bombay,Bombay,0.00025
+Bombay_148,Bombay,Bombay,0.00161
+Bombay_151,Bombay,Bombay,0.00177
+Bombay_158,Bombay,Bombay,0.00076
+Bombay_159,Bombay,Bombay,0.00029
+Bombay_162,Bombay,Bombay,0.00146
+Bombay_167,Bombay,Bombay,0.0005
+Bombay_169,Bombay,Bombay,0.00386
+Bombay_179,Bombay,Bombay,0.00025
+Bombay_181,Bombay,Bombay,0.00054
+Bombay_185,Bombay,Bombay,0.00035
+Bombay_186,Bombay,Bombay,0.00424
+Egyptian_Mau_103,Egyptian Mau,Egyptian Mau,0.94491
+Egyptian_Mau_105,Egyptian Mau,Egyptian Mau,0.95308
+Egyptian_Mau_11,Egyptian Mau,Egyptian Mau,0.63748
+Egyptian_Mau_110,Egyptian Mau,Egyptian Mau,0.9176
+Egyptian_Mau_114,Egyptian Mau,Egyptian Mau,0.992
+Egyptian_Mau_12,Egyptian Mau,Egyptian Mau,0.98486
+Egyptian_Mau_127,Egyptian Mau,Egyptian Mau,0.99102
+Egyptian_Mau_13,Egyptian Mau,Egyptian Mau,0.97484
+Egyptian_Mau_131,Egyptian Mau,Bengal,0.03766
+Egyptian_Mau_142,Egyptian Mau,Egyptian Mau,0.88506
+Egyptian_Mau_146,Egyptian Mau,Egyptian Mau,0.9409
+Egyptian_Mau_148,Egyptian Mau,Egyptian Mau,0.56188
+Egyptian_Mau_15,Egyptian Mau,Abyssinian,0.26135
+Egyptian_Mau_150,Egyptian Mau,Egyptian Mau,0.95018
+Egyptian_Mau_152,Egyptian Mau,Russian Blue,0.23004
+Egyptian_Mau_155,Egyptian Mau,Abyssinian,0.00546
+Egyptian_Mau_157,Egyptian Mau,Egyptian Mau,0.72695
+Egyptian_Mau_171,Egyptian Mau,Bengal,0.43513
+Egyptian_Mau_175,Egyptian Mau,Egyptian Mau,0.96793
+Egyptian_Mau_197,Egyptian Mau,Egyptian Mau,0.91996
+Ragdoll_100,Ragdoll,Ragdoll,0.0025
+Ragdoll_116,Ragdoll,Ragdoll,0.00787
+Ragdoll_118,Ragdoll,Ragdoll,0.00595
+Ragdoll_131,Ragdoll,Ragdoll,0.00746
+Ragdoll_135,Ragdoll,Ragdoll,0.0027
+Ragdoll_138,Ragdoll,Birman,0.00175
+Ragdoll_143,Ragdoll,Ragdoll,0.00155
+Ragdoll_147,Ragdoll,Ragdoll,0.00024
+Ragdoll_150,Ragdoll,Ragdoll,0.00038
+Ragdoll_153,Ragdoll,Ragdoll,0.00021
+Ragdoll_164,Ragdoll,Ragdoll,0.00109
+Ragdoll_168,Ragdoll,Ragdoll,0.00036
+Ragdoll_173,Ragdoll,Ragdoll,6e-05
+Ragdoll_178,Ragdoll,Ragdoll,0.00051
+Ragdoll_181,Ragdoll,Ragdoll,0.00223
+Ragdoll_188,Ragdoll,Ragdoll,0.00112
+Ragdoll_192,Ragdoll,Ragdoll,0.00049
+Ragdoll_196,Ragdoll,Ragdoll,0.00175
+Ragdoll_201,Ragdoll,Birman,0.00053
+Ragdoll_202,Ragdoll,Ragdoll,0.00019
+Russian_Blue_10,Russian Blue,Russian Blue,0.00372
+Russian_Blue_100,Russian Blue,Russian Blue,0.00214
+Russian_Blue_108,Russian Blue,Russian Blue,0.00237
+Russian_Blue_123,Russian Blue,Russian Blue,0.00029
+Russian_Blue_131,Russian Blue,Russian Blue,0.0011
+Russian_Blue_132,Russian Blue,Russian Blue,0.00123
+Russian_Blue_142,Russian Blue,Russian Blue,0.00744
+Russian_Blue_150,Russian Blue,Russian Blue,0.00045
+Russian_Blue_154,Russian Blue,Russian Blue,0.00226
+Russian_Blue_155,Russian Blue,Russian Blue,0.00741
+Russian_Blue_158,Russian Blue,Russian Blue,0.00163
+Russian_Blue_159,Russian Blue,Russian Blue,0.00133
+Russian_Blue_164,Russian Blue,Russian Blue,0.00032
+Russian_Blue_169,Russian Blue,Russian Blue,0.00125
+Russian_Blue_174,Russian Blue,Russian Blue,0.01533
+Russian_Blue_179,Russian Blue,Russian Blue,0.0016
+Russian_Blue_191,Russian Blue,Russian Blue,0.00081
+Russian_Blue_193,Russian Blue,Russian Blue,0.00069
+Russian_Blue_198,Russian Blue,Russian Blue,0.00142
+Russian_Blue_199,Russian Blue,Russian Blue,0.00065
+Siamese_100,Siamese,Siamese,0.00024
+Siamese_110,Siamese,Siamese,0.00265
+Siamese_113,Siamese,Siamese,0.00033
+Siamese_115,Siamese,Siamese,0.00042
+Siamese_116,Siamese,Siamese,5e-05
+Siamese_122,Siamese,Siamese,0.01192
+Siamese_126,Siamese,Siamese,0.00042
+Siamese_136,Siamese,Siamese,0.0001
+Siamese_139,Siamese,Siamese,3e-05
+Siamese_143,Siamese,Siamese,0.00037
+Siamese_145,Siamese,Ragdoll,0.00245
+Siamese_153,Siamese,Siamese,0.0001
+Siamese_163,Siamese,Siamese,0.0001
+Siamese_164,Siamese,Siamese,2e-05
+Siamese_167,Siamese,Siamese,0.0005
+Siamese_168,Siamese,Siamese,5e-05
+Siamese_170,Siamese,Siamese,0.0009
+Siamese_194,Siamese,Siamese,0.00114
+Siamese_204,Siamese,Siamese,0.00041
+Siamese_208,Siamese,Siamese,6e-05

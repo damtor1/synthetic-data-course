@@ -1,0 +1,44 @@
+{
+  "mode": "ip-adapter",
+  "model": "sd15",
+  "repo": "stable-diffusion-v1-5/stable-diffusion-v1-5",
+  "revision": "451f4fe16113bff5a5d2269ed5ad43b0592e9a14",
+  "variant": "fp16",
+  "adapter": {
+    "repo": "h94/IP-Adapter",
+    "subfolder": "models",
+    "weight_name": "ip-adapter_sd15.safetensors",
+    "revision": "018e402774aeeddd60609b4ecdb7e298259dc729"
+  },
+  "scheduler": "dpm",
+  "prompts": [
+    "a clear photography of a spotted Egyptian Mau cat, green gooseberry eyes, detailed fur, indoor lighting",
+    "a studio portrait of an Egyptian Mau cat sitting on a rug, sharp focus, natural colors"
+  ],
+  "negative_prompt": "illustration, painting, cartoon, text, watermark, multiple cats, deformed animal, extra limbs",
+  "steps": 30,
+  "guidance": 7.5,
+  "strength": null,
+  "ip_adapter_scale": 1.0,
+  "outpaint_scale": null,
+  "seed": 1000,
+  "size": 512,
+  "sources": [
+    "Egyptian_Mau_104",
+    "Egyptian_Mau_117",
+    "Egyptian_Mau_119",
+    "Egyptian_Mau_121",
+    "Egyptian_Mau_123",
+    "Egyptian_Mau_124",
+    "Egyptian_Mau_134",
+    "Egyptian_Mau_144",
+    "Egyptian_Mau_147",
+    "Egyptian_Mau_153",
+    "Egyptian_Mau_154",
+    "Egyptian_Mau_160",
+    "Egyptian_Mau_165",
+    "Egyptian_Mau_190",
+    "Egyptian_Mau_192"
+  ],
+  "skipped_sources": []
+}
